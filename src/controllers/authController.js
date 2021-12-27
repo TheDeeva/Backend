@@ -28,4 +28,15 @@ module.exports.login = async (req, res, next) => {
     }
 };
 
-module.exports.logout = async (req, res, next) => {};
+module.exports.logout = async (req, res, next) => {
+    try {
+        req.user.token=""
+        await user.save()
+        res.status(200).send({user})
+    } catch (e) {
+        return next({
+            status: 500,
+            message: "User not logged out"
+        })
+    }
+};
