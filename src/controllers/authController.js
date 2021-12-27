@@ -4,7 +4,7 @@ module.exports.signup = async (req, res, next) => {
   const user = new User(req.body);
   try {
     await user.save();
-    const token = user.generateAuthToken();
+    const token = await user.generateAuthToken();
     console.log(token);
     res.status(201).send({ user, token });
   } catch (e) {
@@ -34,6 +34,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.logout = async (req, res, next) => {
   try {
     req.user.token = "";
+    const user = req.user;
     await user.save();
     res.status(200).send({ user });
   } catch (e) {
